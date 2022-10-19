@@ -36,35 +36,14 @@ module "dns_zone_app_service" {
     azurerm.dns_subscription = azurerm.dns_subscription
   }
 
-  source          = "../azure-private-dns-zone"
-  dns_name        = "privatelink.azurewebsites.net"
-  rg_name         = azurerm_resource_group.rg_dns.name
-  dns_hub_vnet_id = var.dns_hub_vnet_id
-}
-# 2. assign policy 
-resource "azurerm_management_group_policy_assignment" "dns_app_service" {
-  provider             = azurerm.dns_policy_subscription
-  name                 = "dns_app_service"
-  display_name         = "(Terraform)Configure App Service apps to use private DNS zones"
-  policy_definition_id = "/providers/Microsoft.Authorization/policyDefinitions/b318f84a-b872-429b-ac6d-a01b96814452"
-  management_group_id  = var.management_group_id
-  location             = var.location
-
-  identity {
-    type         = "UserAssigned"
-    identity_ids = [azurerm_user_assigned_identity.private_dns_policy_mi.id]
-  }
-  parameters = <<PARAMS
-    {
-      "privateDnsZoneId": {
-        "value": "${module.dns_zone_app_service.dns_zone_id}"
-      },
-      "effect": {
-        "value": "DeployIfNotExists"
-      }
-    }
-PARAMS
-
+  source              = "../azure-private-dns-zone"
+  dns_name            = "privatelink.azurewebsites.net"
+  location            = var.location
+  rg_name             = azurerm_resource_group.rg_dns.name
+  dns_hub_vnet_id     = var.dns_hub_vnet_id
+  management_group_id = var.management_group_id
+  policy_mi_id        = azurerm_user_assigned_identity.private_dns_policy_mi.id
+  enable_policy       = true
 }
 
 # storage blob
@@ -74,58 +53,12 @@ module "dns_zone_storage_blob" {
     azurerm.dns_subscription = azurerm.dns_subscription
   }
 
-  source          = "../azure-private-dns-zone"
-  dns_name        = "privatelink.blob.core.windows.net"
-  rg_name         = azurerm_resource_group.rg_dns.name
-  dns_hub_vnet_id = var.dns_hub_vnet_id
-}
-
-resource "azurerm_management_group_policy_assignment" "dns_storage_blob" {
-  provider             = azurerm.dns_policy_subscription
-  name                 = "dns_storage_blob"
-  display_name         = "(Terraform)Configure Stoarge Blob to use private DNS zones"
-  policy_definition_id = "/providers/Microsoft.Authorization/policyDefinitions/75973700-529f-4de2-b794-fb9b6781b6b0"
-  management_group_id  = var.management_group_id
-  location             = var.location
-
-  identity {
-    type         = "UserAssigned"
-    identity_ids = [azurerm_user_assigned_identity.private_dns_policy_mi.id]
-  }
-  parameters = <<PARAMS
-    {
-      "privateDnsZoneId": {
-        "value": "${module.dns_zone_storage_blob.dns_zone_id}"
-      },
-      "effect": {
-        "value": "DeployIfNotExists"
-      }
-    }
-PARAMS
-
-}
-
-resource "azurerm_management_group_policy_assignment" "dns_storage_blob_secondary" {
-  provider             = azurerm.dns_policy_subscription
-  name                 = "dns_storage_blob_sec"
-  display_name         = "(Terraform)Configure Stoarge Blob Secondary to use private DNS zones"
-  policy_definition_id = "/providers/Microsoft.Authorization/policyDefinitions/d847d34b-9337-4e2d-99a5-767e5ac9c582"
-  management_group_id  = var.management_group_id
-  location             = var.location
-
-  identity {
-    type         = "UserAssigned"
-    identity_ids = [azurerm_user_assigned_identity.private_dns_policy_mi.id]
-  }
-  parameters = <<PARAMS
-    {
-      "privateDnsZoneId": {
-        "value": "${module.dns_zone_storage_blob.dns_zone_id}"
-      },
-      "effect": {
-        "value": "DeployIfNotExists"
-      }
-    }
-PARAMS
-
+  source              = "../azure-private-dns-zone"
+  dns_name            = "privatelink.blob.core.windows.net"
+  location            = var.location
+  rg_name             = azurerm_resource_group.rg_dns.name
+  dns_hub_vnet_id     = var.dns_hub_vnet_id
+  management_group_id = var.management_group_id
+  policy_mi_id        = azurerm_user_assigned_identity.private_dns_policy_mi.id
+  enable_policy       = true
 }
