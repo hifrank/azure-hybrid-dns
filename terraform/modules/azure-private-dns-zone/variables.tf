@@ -34,3 +34,9 @@ variable "management_group_id" {
   type        = string
   description = "Management group id for private DNS Policy."
 }
+
+variable "policy_name_prefix" {
+  type        = string
+  description = "Prefix for policy"
+  default     = "Terraform"
+}

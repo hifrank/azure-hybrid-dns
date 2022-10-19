@@ -62,3 +62,123 @@ module "dns_zone_storage_blob" {
   policy_mi_id        = azurerm_user_assigned_identity.private_dns_policy_mi.id
   enable_policy       = true
 }
+
+# storage file
+module "dns_zone_storage_file" {
+  providers = {
+    # subscription for private DNS zone
+    azurerm.dns_subscription = azurerm.dns_subscription
+  }
+
+  source              = "../azure-private-dns-zone"
+  dns_name            = "privatelink.file.core.windows.net"
+  location            = var.location
+  rg_name             = azurerm_resource_group.rg_dns.name
+  dns_hub_vnet_id     = var.dns_hub_vnet_id
+  management_group_id = var.management_group_id
+  policy_mi_id        = azurerm_user_assigned_identity.private_dns_policy_mi.id
+  enable_policy       = true
+}
+
+# storage queue
+module "dns_zone_storage_queue" {
+  providers = {
+    # subscription for private DNS zone
+    azurerm.dns_subscription = azurerm.dns_subscription
+  }
+
+  source              = "../azure-private-dns-zone"
+  dns_name            = "privatelink.queue.core.windows.net"
+  location            = var.location
+  rg_name             = azurerm_resource_group.rg_dns.name
+  dns_hub_vnet_id     = var.dns_hub_vnet_id
+  management_group_id = var.management_group_id
+  policy_mi_id        = azurerm_user_assigned_identity.private_dns_policy_mi.id
+  enable_policy       = true
+}
+
+# storage queue
+module "dns_zone_storage_web" {
+  providers = {
+    # subscription for private DNS zone
+    azurerm.dns_subscription = azurerm.dns_subscription
+  }
+
+  source              = "../azure-private-dns-zone"
+  dns_name            = "privatelink.web.core.windows.net"
+  location            = var.location
+  rg_name             = azurerm_resource_group.rg_dns.name
+  dns_hub_vnet_id     = var.dns_hub_vnet_id
+  management_group_id = var.management_group_id
+  policy_mi_id        = azurerm_user_assigned_identity.private_dns_policy_mi.id
+  enable_policy       = true
+}
+
+# storage table
+module "dns_zone_storage_table" {
+  providers = {
+    # subscription for private DNS zone
+    azurerm.dns_subscription = azurerm.dns_subscription
+  }
+
+  source              = "../azure-private-dns-zone"
+  dns_name            = "privatelink.table.core.windows.net"
+  location            = var.location
+  rg_name             = azurerm_resource_group.rg_dns.name
+  dns_hub_vnet_id     = var.dns_hub_vnet_id
+  management_group_id = var.management_group_id
+  policy_mi_id        = azurerm_user_assigned_identity.private_dns_policy_mi.id
+  enable_policy       = true
+}
+
+# Azure SQL Database
+# FIXME doesn't have built in policy for now
+module "dns_zone_azure_sql" {
+  providers = {
+    # subscription for private DNS zone
+    azurerm.dns_subscription = azurerm.dns_subscription
+  }
+
+  source              = "../azure-private-dns-zone"
+  dns_name            = "privatelink.database.windows.net"
+  location            = var.location
+  rg_name             = azurerm_resource_group.rg_dns.name
+  dns_hub_vnet_id     = var.dns_hub_vnet_id
+  management_group_id = var.management_group_id
+  policy_mi_id        = azurerm_user_assigned_identity.private_dns_policy_mi.id
+  enable_policy       = true
+}
+
+# Cosmos DB: mongo
+module "dns_zone_cosmos_db_mongo" {
+  providers = {
+    # subscription for private DNS zone
+    azurerm.dns_subscription = azurerm.dns_subscription
+  }
+
+  source              = "../azure-private-dns-zone"
+  dns_name            = "privatelink.mongo.cosmos.azure.com"
+  location            = var.location
+  rg_name             = azurerm_resource_group.rg_dns.name
+  dns_hub_vnet_id     = var.dns_hub_vnet_id
+  management_group_id = var.management_group_id
+  policy_mi_id        = azurerm_user_assigned_identity.private_dns_policy_mi.id
+  enable_policy       = true
+}
+
+# Cosmos DB: Cassandra
+module "dns_zone_cosmos_db_cassandra" {
+  providers = {
+    # subscription for private DNS zone
+    azurerm.dns_subscription = azurerm.dns_subscription
+  }
+
+  source              = "../azure-private-dns-zone"
+  dns_name            = "privatelink.mongo.cassandra.azure.com"
+  location            = var.location
+  rg_name             = azurerm_resource_group.rg_dns.name
+  dns_hub_vnet_id     = var.dns_hub_vnet_id
+  management_group_id = var.management_group_id
+  policy_mi_id        = azurerm_user_assigned_identity.private_dns_policy_mi.id
+  enable_policy       = true
+}
