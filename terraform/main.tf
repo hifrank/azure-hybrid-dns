@@ -1,26 +1,26 @@
 provider "azurerm" {
   features {}
-  alias = "connectivity"
+  alias = "dns_subscription"
   # my MSDN
-  subscription_id = "<Subscription for DNS private zone resource>"
+  subscription_id = var.dns_subscription
 }
 
 provider "azurerm" {
   features {}
-  alias = "dns_policy"
+  alias = "dns_policy_subscription"
   # my MSDN
-  subscription_id = "<Subscription for Policy resource, ex, Managed Identity, Management Group policy assignment>"
+  subscription_id = var.dns_policy_subscription
 }
 
 module "dns_for_priv_endpoint" {
   source = "./modules/azure-private-dns-zone-for-private-endpoint"
   providers = {
     # subscription for private DNS zone
-    azurerm.dns_subscription = azurerm.connectivity
+    azurerm.dns_subscription = azurerm.dns_subscription
     # subscription for management group
-    azurerm.dns_policy_subscription = azurerm.dns_policy
+    azurerm.dns_policy_subscription = azurerm.dns_policy_subscription
   }
   #root managemnet group
-  management_group_id = "<Management group id to attach policy>"
-  dns_hub_vnet_id     = "<VNet to link priavte zone>"
+  management_group_id = var.management_group_id
+  dns_hub_vnet_id     = var.dns_hub_vnet_id
 }
