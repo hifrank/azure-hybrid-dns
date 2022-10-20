@@ -174,7 +174,75 @@ module "dns_zone_cosmos_db_cassandra" {
   }
 
   source              = "../azure-private-dns-zone"
-  dns_name            = "privatelink.mongo.cassandra.azure.com"
+  dns_name            = "privatelink.cassandra.cassandra.azure.com"
+  location            = var.location
+  rg_name             = azurerm_resource_group.rg_dns.name
+  dns_hub_vnet_id     = var.dns_hub_vnet_id
+  management_group_id = var.management_group_id
+  policy_mi_id        = azurerm_user_assigned_identity.private_dns_policy_mi.id
+  enable_policy       = true
+}
+
+# Azure Service Bus/Azure Event Hub
+module "dns_zone_service_bus" {
+  providers = {
+    # subscription for private DNS zone
+    azurerm.dns_subscription = azurerm.dns_subscription
+  }
+
+  source              = "../azure-private-dns-zone"
+  dns_name            = "privatelink.servicebus.windows.net"
+  location            = var.location
+  rg_name             = azurerm_resource_group.rg_dns.name
+  dns_hub_vnet_id     = var.dns_hub_vnet_id
+  management_group_id = var.management_group_id
+  policy_mi_id        = azurerm_user_assigned_identity.private_dns_policy_mi.id
+  enable_policy       = true
+}
+
+# Azure Cache for Redis
+module "dns_zone_cache_redis" {
+  providers = {
+    # subscription for private DNS zone
+    azurerm.dns_subscription = azurerm.dns_subscription
+  }
+
+  source              = "../azure-private-dns-zone"
+  dns_name            = "privatelink.redis.cache.windows.net"
+  location            = var.location
+  rg_name             = azurerm_resource_group.rg_dns.name
+  dns_hub_vnet_id     = var.dns_hub_vnet_id
+  management_group_id = var.management_group_id
+  policy_mi_id        = azurerm_user_assigned_identity.private_dns_policy_mi.id
+  enable_policy       = true
+}
+
+# Azure Site Recovery
+module "dns_zone_site_recovery" {
+  providers = {
+    # subscription for private DNS zone
+    azurerm.dns_subscription = azurerm.dns_subscription
+  }
+
+  source              = "../azure-private-dns-zone"
+  dns_name            = "privatelink.siterecovery.windowsazure.com"
+  location            = var.location
+  rg_name             = azurerm_resource_group.rg_dns.name
+  dns_hub_vnet_id     = var.dns_hub_vnet_id
+  management_group_id = var.management_group_id
+  policy_mi_id        = azurerm_user_assigned_identity.private_dns_policy_mi.id
+  enable_policy       = true
+}
+
+# Azure Migrate
+module "dns_zone_migrate" {
+  providers = {
+    # subscription for private DNS zone
+    azurerm.dns_subscription = azurerm.dns_subscription
+  }
+
+  source              = "../azure-private-dns-zone"
+  dns_name            = "privatelink.prod.migration.windowsazure.com"
   location            = var.location
   rg_name             = azurerm_resource_group.rg_dns.name
   dns_hub_vnet_id     = var.dns_hub_vnet_id

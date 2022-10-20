@@ -13,6 +13,21 @@ locals {
   # CosmosDB
   dns_cosmos_mongo_name     = "privatelink.mongo.cosmos.azure.com"
   dns_cosmos_cassandra_name = "privatelink.cassandra.cosmos.azure.com"
+
+  # Azure Service Bus/Azure Event Hub
+  dns_service_bus_name = "privatelink.servicebus.windows.net"
+
+  # ACR
+  dns_acr_name = "privatelink.azurecr.io"
+
+  # Cache Redis
+  dns_cache_redis_name = "privatelink.redis.cache.windows.net"
+
+  # Azure Site Recovery
+  dns_site_recovery_name = "privatelink.siterecovery.windowsazure.com"
+
+  # Azure Migrate (Microsoft.Migrate)
+  dns_migrate_name = "privatelink.prod.migration.windowsazure.com"
 }
 
 
@@ -355,6 +370,148 @@ resource "azurerm_management_group_policy_assignment" "cosmos_cassandra" {
       },
       "privateEndpointGroupId": {
         "value": "Cassandra"
+      },
+      "effect": {
+        "value": "DeployIfNotExists"
+      }
+    }
+PARAMS
+}
+
+################################################################
+# policy for Azure Service Bus/Azure Event Hub
+# https://learn.microsoft.com/en-us/azure/service-bus-messaging/private-link-service
+resource "azurerm_management_group_policy_assignment" "service_bus" {
+  count                = (var.enable_policy && var.dns_name == local.dns_service_bus_name ? 1 : 0)
+  provider             = azurerm.dns_subscription
+  name                 = "dns_service_bus"
+  display_name         = "(${var.policy_name_prefix})Configure Azure Service Bus/Azure Event Hub to use private DNS zones"
+  policy_definition_id = "/providers/Microsoft.Authorization/policyDefinitions/ed66d4f5-8220-45dc-ab4a-20d1749c74e6"
+  management_group_id  = var.management_group_id
+  location             = var.location
+
+  identity {
+    type         = "UserAssigned"
+    identity_ids = [var.policy_mi_id]
+  }
+  parameters = <<PARAMS
+    {
+      "privateDnsZoneId": {
+        "value": "${azurerm_private_dns_zone.this.id}"
+      },
+      "effect": {
+        "value": "DeployIfNotExists"
+      }
+    }
+PARAMS
+}
+
+################################################################
+# policy for ACR
+# https://learn.microsoft.com/en-us/azure/container-registry/container-registry-private-link
+resource "azurerm_management_group_policy_assignment" "acr" {
+  count                = (var.enable_policy && var.dns_name == local.dns_acr_name ? 1 : 0)
+  provider             = azurerm.dns_subscription
+  name                 = "dns_acr"
+  display_name         = "(${var.policy_name_prefix})Configure ACR to use private DNS zones"
+  policy_definition_id = "/providers/Microsoft.Authorization/policyDefinitions/e9585a95-5b8c-4d03-b193-dc7eb5ac4c32"
+  management_group_id  = var.management_group_id
+  location             = var.location
+
+  identity {
+    type         = "UserAssigned"
+    identity_ids = [var.policy_mi_id]
+  }
+  parameters = <<PARAMS
+    {
+      "privateDnsZoneId": {
+        "value": "${azurerm_private_dns_zone.this.id}"
+      },
+      "effect": {
+        "value": "DeployIfNotExists"
+      }
+    }
+PARAMS
+}
+
+################################################################
+# policy for Cache Redis
+# https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-private-link
+resource "azurerm_management_group_policy_assignment" "cache_redis" {
+  count                = (var.enable_policy && var.dns_name == local.dns_cache_redis_name ? 1 : 0)
+  provider             = azurerm.dns_subscription
+  name                 = "dns_cache_redis"
+  display_name         = "(${var.policy_name_prefix})Configure Azure Cache Redis to use private DNS zones"
+  policy_definition_id = "/providers/Microsoft.Authorization/policyDefinitions/e016b22b-e0eb-436d-8fd7-160c4eaed6e2"
+  management_group_id  = var.management_group_id
+  location             = var.location
+
+  identity {
+    type         = "UserAssigned"
+    identity_ids = [var.policy_mi_id]
+  }
+  parameters = <<PARAMS
+    {
+      "privateDnsZoneId": {
+        "value": "${azurerm_private_dns_zone.this.id}"
+      },
+      "effect": {
+        "value": "DeployIfNotExists"
+      }
+    }
+PARAMS
+}
+
+################################################################
+# policy for Azure Site Recovery
+# https://learn.microsoft.com/en-us/azure/site-recovery/hybrid-how-to-enable-replication-private-endpoints
+resource "azurerm_management_group_policy_assignment" "site_recovery" {
+  count        = (var.enable_policy && var.dns_name == local.dns_site_recovery_name ? 1 : 0)
+  provider     = azurerm.dns_subscription
+  name         = "dns_site_recovery"
+  display_name = "(${var.policy_name_prefix})Configure Azure Site Recovery to use private DNS zones"
+  # Preview
+  policy_definition_id = "/providers/Microsoft.Authorization/policyDefinitions/942bd215-1a66-44be-af65-6a1c0318dbe2"
+  management_group_id  = var.management_group_id
+  location             = var.location
+
+  identity {
+    type         = "UserAssigned"
+    identity_ids = [var.policy_mi_id]
+  }
+  parameters = <<PARAMS
+    {
+      "privateDnsZoneId": {
+        "value": "${azurerm_private_dns_zone.this.id}"
+      },
+      "effect": {
+        "value": "DeployIfNotExists"
+      }
+    }
+PARAMS
+}
+
+################################################################
+# policy for Azure Migrate
+# https://learn.microsoft.com/en-us/azure/migrate/how-to-use-azure-migrate-with-private-endpoints
+resource "azurerm_management_group_policy_assignment" "migrate" {
+  count        = (var.enable_policy && var.dns_name == local.dns_migrate_name ? 1 : 0)
+  provider     = azurerm.dns_subscription
+  name         = "dns_migrate"
+  display_name = "(${var.policy_name_prefix})Configure Azure Migrate to use private DNS zones"
+  # Preview
+  policy_definition_id = "/providers/Microsoft.Authorization/policyDefinitions/7590a335-57cf-4c95-babd-ecbc8fafeb1f"
+  management_group_id  = var.management_group_id
+  location             = var.location
+
+  identity {
+    type         = "UserAssigned"
+    identity_ids = [var.policy_mi_id]
+  }
+  parameters = <<PARAMS
+    {
+      "privateDnsZoneId": {
+        "value": "${azurerm_private_dns_zone.this.id}"
       },
       "effect": {
         "value": "DeployIfNotExists"
