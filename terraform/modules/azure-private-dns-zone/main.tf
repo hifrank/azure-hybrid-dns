@@ -85,7 +85,7 @@ resource "azurerm_management_group_policy_assignment" "storage_blob" {
   count                = (var.enable_policy && var.dns_name == local.dns_storage_blob_name ? 1 : 0)
   provider             = azurerm.dns_subscription
   name                 = "dns_storage_blob"
-  display_name         = "(${var.policy_name_prefix})Configure Stoarge Blob to use private DNS zones"
+  display_name         = "(${var.policy_name_prefix})Configure Storage Blob to use private DNS zones"
   policy_definition_id = "/providers/Microsoft.Authorization/policyDefinitions/75973700-529f-4de2-b794-fb9b6781b6b0"
   management_group_id  = var.management_group_id
   location             = var.location
@@ -111,7 +111,7 @@ resource "azurerm_management_group_policy_assignment" "storage_blob_sec" {
   count                = (var.enable_policy && var.dns_name == local.dns_storage_blob_name ? 1 : 0)
   provider             = azurerm.dns_subscription
   name                 = "dns_storage_blob_sec"
-  display_name         = "(${var.policy_name_prefix})Configure Secondary Stoarge Blob to use private DNS zones"
+  display_name         = "(${var.policy_name_prefix})Configure Secondary Storage Blob to use private DNS zones"
   policy_definition_id = "/providers/Microsoft.Authorization/policyDefinitions/d847d34b-9337-4e2d-99a5-767e5ac9c582"
   management_group_id  = var.management_group_id
   location             = var.location
@@ -138,7 +138,7 @@ resource "azurerm_management_group_policy_assignment" "storage_table" {
   count                = (var.enable_policy && var.dns_name == local.dns_storage_table_name ? 1 : 0)
   provider             = azurerm.dns_subscription
   name                 = "dns_storage_table"
-  display_name         = "(${var.policy_name_prefix})Configure Stoarge Table to use private DNS zones"
+  display_name         = "(${var.policy_name_prefix})Configure Storage Table to use private DNS zones"
   policy_definition_id = "/providers/Microsoft.Authorization/policyDefinitions/028bbd88-e9b5-461f-9424-a1b63a7bee1a"
   management_group_id  = var.management_group_id
   location             = var.location
@@ -164,7 +164,7 @@ resource "azurerm_management_group_policy_assignment" "storage_table_sec" {
   count                = (var.enable_policy && var.dns_name == local.dns_storage_table_name ? 1 : 0)
   provider             = azurerm.dns_subscription
   name                 = "dns_storage_table_sec"
-  display_name         = "(${var.policy_name_prefix})Configure Secondary Stoarge Table to use private DNS zones"
+  display_name         = "(${var.policy_name_prefix})Configure Secondary Storage Table to use private DNS zones"
   policy_definition_id = "/providers/Microsoft.Authorization/policyDefinitions/c1d634a5-f73d-4cdd-889f-2cc7006eb47f"
   management_group_id  = var.management_group_id
   location             = var.location
@@ -191,7 +191,7 @@ resource "azurerm_management_group_policy_assignment" "storage_file" {
   count                = (var.enable_policy && var.dns_name == local.dns_storage_file_name ? 1 : 0)
   provider             = azurerm.dns_subscription
   name                 = "dns_storage_file"
-  display_name         = "(${var.policy_name_prefix})Configure Stoarge File to use private DNS zones"
+  display_name         = "(${var.policy_name_prefix})Configure Storage File to use private DNS zones"
   policy_definition_id = "/providers/Microsoft.Authorization/policyDefinitions/6df98d03-368a-4438-8730-a93c4d7693d6"
   management_group_id  = var.management_group_id
   location             = var.location
@@ -218,7 +218,7 @@ resource "azurerm_management_group_policy_assignment" "storage_web" {
   count                = (var.enable_policy && var.dns_name == local.dns_storage_web_name ? 1 : 0)
   provider             = azurerm.dns_subscription
   name                 = "dns_storage_web"
-  display_name         = "(${var.policy_name_prefix})Configure Stoarge Web to use private DNS zones"
+  display_name         = "(${var.policy_name_prefix})Configure Storage Web to use private DNS zones"
   policy_definition_id = "/providers/Microsoft.Authorization/policyDefinitions/9adab2a5-05ba-4fbd-831a-5bf958d04218"
   management_group_id  = var.management_group_id
   location             = var.location
@@ -244,7 +244,7 @@ resource "azurerm_management_group_policy_assignment" "storage_web_sec" {
   count                = (var.enable_policy && var.dns_name == local.dns_storage_web_name ? 1 : 0)
   provider             = azurerm.dns_subscription
   name                 = "dns_storage_web_sec"
-  display_name         = "(${var.policy_name_prefix})Configure Secondary Stoarge Web to use private DNS zones"
+  display_name         = "(${var.policy_name_prefix})Configure Secondary Storage Web to use private DNS zones"
   policy_definition_id = "/providers/Microsoft.Authorization/policyDefinitions/d19ae5f1-b303-4b82-9ca8-7682749faf0c"
   management_group_id  = var.management_group_id
   location             = var.location
@@ -271,7 +271,7 @@ resource "azurerm_management_group_policy_assignment" "storage_queue" {
   count                = (var.enable_policy && var.dns_name == local.dns_storage_queue_name ? 1 : 0)
   provider             = azurerm.dns_subscription
   name                 = "dns_storage_queue"
-  display_name         = "(${var.policy_name_prefix})Configure Stoarge queue to use private DNS zones"
+  display_name         = "(${var.policy_name_prefix})Configure Storage queue to use private DNS zones"
   policy_definition_id = "/providers/Microsoft.Authorization/policyDefinitions/bcff79fb-2b0d-47c9-97e5-3023479b00d1"
   management_group_id  = var.management_group_id
   location             = var.location
@@ -296,7 +296,7 @@ resource "azurerm_management_group_policy_assignment" "storage_queue_sec" {
   count                = (var.enable_policy && var.dns_name == local.dns_storage_queue_name ? 1 : 0)
   provider             = azurerm.dns_subscription
   name                 = "dns_storage_queue_sec"
-  display_name         = "(${var.policy_name_prefix})Configure Stoarge queue to use private DNS zones"
+  display_name         = "(${var.policy_name_prefix})Configure Storage queue to use private DNS zones"
   policy_definition_id = "/providers/Microsoft.Authorization/policyDefinitions/da9b4ae8-5ddc-48c5-b9c0-25f8abf7a3d6"
   management_group_id  = var.management_group_id
   location             = var.location
